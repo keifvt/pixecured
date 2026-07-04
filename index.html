@@ -1,0 +1,2538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIXecure</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Press Start 2P', cursive;
+            background: #5c94fc;
+            min-height: 100vh;
+            padding: 20px;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(255,255,255,0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255,255,255,0.2) 0%, transparent 50%),
+                radial-gradient(circle at 40% 70%, rgba(255,255,255,0.25) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(255,255,255,0.2) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            background: #ffd700;
+            border: 6px solid #000;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .header::before,
+        .header::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #ff4444;
+            border: 4px solid #000;
+        }
+
+        .header::before {
+            top: -4px;
+            left: -4px;
+        }
+
+        .header::after {
+            top: -4px;
+            right: -4px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            text-shadow: 4px 4px 0 #000;
+            margin-bottom: 10px;
+            letter-spacing: 3px;
+            text-align: center;
+            color: #ff4444;
+        }
+
+        .header p {
+            font-size: 0.5em;
+            color: #000;
+            margin-top: 10px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px;
+            background: #fff;
+            border: 5px solid #000;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.6em;
+            color: #000;
+            cursor: pointer;
+            transition: all 0.1s;
+            box-shadow: 5px 5px 0 rgba(0,0,0,0.3);
+        }
+
+        .tab:hover {
+            background: #ffe066;
+            transform: translate(2px, 2px);
+            box-shadow: 3px 3px 0 rgba(0,0,0,0.3);
+        }
+
+        .tab:active {
+            transform: translate(5px, 5px);
+            box-shadow: 0 0 0 rgba(0,0,0,0.3);
+        }
+
+        .tab.active {
+            background: #ff4444;
+            color: #fff;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .panel {
+            background: #fff;
+            border: 6px solid #000;
+            padding: 30px;
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 4px solid #000;
+        }
+
+        .icon {
+            width: 48px;
+            height: 48px;
+            margin-right: 20px;
+            background: #000;
+            position: relative;
+            flex-shrink: 0;
+            color: #fff;
+        }
+
+        .icon.lock::before {
+            content: '';
+            position: absolute;
+            width: 24px;
+            height: 16px;
+            background: #000;
+            top: 8px;
+            left: 12px;
+            border: 4px solid #000;
+            background: transparent;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .icon.lock::after {
+            content: '';
+            position: absolute;
+            width: 32px;
+            height: 24px;
+            background: #000;
+            bottom: 8px;
+            left: 8px;
+        }
+
+        .icon.unlock::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 16px;
+            background: transparent;
+            border: 4px solid #000;
+            border-right: none;
+            top: 8px;
+            left: 12px;
+            border-radius: 12px 0 0 0;
+        }
+
+        .icon.unlock::after {
+            content: '';
+            position: absolute;
+            width: 32px;
+            height: 24px;
+            background: #000;
+            bottom: 8px;
+            left: 8px;
+        }
+
+        .section-title h2 {
+            font-size: 1.1em;
+            color: #ff4444;
+            margin-bottom: 8px;
+        }
+
+        .section-title p {
+            font-size: 0.45em;
+            color: #666;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.55em;
+            color: #000;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 12px;
+            border: 4px solid #000;
+            background: #f5f5f5;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.55em;
+            color: #000;
+            line-height: 1.6;
+        }
+
+        .form-input:focus, .form-textarea:focus {
+            outline: none;
+            background: #fffacd;
+            box-shadow: inset 4px 4px 0 rgba(0,0,0,0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 150px;
+            line-height: 1.8;
+        }
+
+        .file-upload {
+            border: 4px dashed #000;
+            padding: 40px;
+            text-align: center;
+            background: #f5f5f5;
+            cursor: pointer;
+            transition: all 0.1s;
+        }
+
+        .file-upload:hover {
+            background: #ffe066;
+            border-style: solid;
+        }
+
+        .file-upload.active {
+            background: #90ee90;
+            border-style: solid;
+        }
+
+        .file-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 15px;
+            position: relative;
+        }
+
+        .file-icon::before {
+            content: '';
+            position: absolute;
+            width: 48px;
+            height: 56px;
+            background: #000;
+            border: 4px solid #000;
+            background: transparent;
+            top: 0;
+            left: 8px;
+        }
+
+        .file-icon::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 20px solid #000;
+            border-top: 20px solid #000;
+            border-right: 20px solid transparent;
+            border-bottom: 20px solid transparent;
+            top: 0;
+            right: 8px;
+        }
+
+        .image-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 15px;
+            position: relative;
+            background: #000;
+            border: 4px solid #000;
+            background: transparent;
+        }
+
+        .image-icon::before {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background: #000;
+            border-radius: 50%;
+            top: 8px;
+            right: 8px;
+        }
+
+        .image-icon::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 24px solid transparent;
+            border-right: 24px solid transparent;
+            border-bottom: 24px solid #000;
+            bottom: 4px;
+            left: 8px;
+        }
+
+        .file-upload-text {
+            font-size: 0.55em;
+            color: #000;
+        }
+
+        .file-name {
+            margin-top: 10px;
+            font-size: 0.5em;
+            color: #ff4444;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 18px;
+            border: 5px solid #000;
+            background: #ffd700;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.6em;
+            cursor: pointer;
+            transition: all 0.1s;
+            text-transform: uppercase;
+            color: #000;
+            box-shadow: 6px 6px 0 rgba(0,0,0,0.3);
+        }
+
+        .btn:hover {
+            background: #ffed4e;
+            transform: translate(2px, 2px);
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.3);
+        }
+
+        .btn:active {
+            transform: translate(6px, 6px);
+            box-shadow: 0 0 0 rgba(0,0,0,0.3);
+        }
+
+        .btn-primary {
+            background: #ff4444;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #ff6666;
+        }
+
+        .btn-secondary {
+            background: #5c94fc;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        .btn-secondary:hover {
+            background: #7dabff;
+        }
+
+        .output-box {
+            background: #f5f5f5;
+            border: 4px solid #000;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .output-image {
+            max-width: 100%;
+            max-height: 400px;
+            border: 4px solid #000;
+            margin: 10px 0;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+
+        .output-text {
+            font-size: 0.55em;
+            padding: 15px;
+            background: #fff;
+            border: 4px solid #000;
+            min-height: 150px;
+            text-align: left;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+            color: #000;
+            line-height: 1.8;
+        }
+
+        .process-viewer {
+            margin: 20px 0;
+            background: #f5f5f5;
+            border: 4px solid #000;
+            padding: 15px;
+        }
+
+        .process-title {
+            font-size: 0.6em;
+            color: #ff4444;
+            margin-bottom: 15px;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .process-scroll {
+            max-height: 300px;
+            overflow-y: auto;
+            background: #fff;
+            border: 3px solid #000;
+            padding: 10px;
+        }
+
+        .process-item {
+            background: #fffacd;
+            border: 3px solid #000;
+            padding: 10px;
+            margin-bottom: 10px;
+            font-size: 0.45em;
+            line-height: 1.6;
+        }
+
+        .process-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .process-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            flex-wrap: wrap;
+        }
+
+        .process-label {
+            color: #5c94fc;
+            font-weight: bold;
+        }
+
+        .process-value {
+            color: #000;
+        }
+
+        .rgb-display {
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            border: 2px solid #000;
+            vertical-align: middle;
+            margin-left: 5px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .mode-toggle {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 15px;
+            border: 4px solid #000;
+            background: #fff;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.55em;
+            cursor: pointer;
+            transition: all 0.1s;
+            color: #000;
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.3);
+        }
+
+        .mode-btn:hover {
+            background: #e0e0e0;
+        }
+
+        .mode-btn.active {
+            background: #5c94fc;
+            color: #fff;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #fff;
+            box-shadow: 0 0 0 2px #ffd700;
+        }
+
+        .star:nth-child(1) { top: 10%; left: 15%; animation: twinkle 2s infinite; }
+        .star:nth-child(2) { top: 20%; left: 85%; animation: twinkle 2.5s infinite 0.5s; }
+        .star:nth-child(3) { top: 60%; left: 10%; animation: twinkle 3s infinite 1s; }
+        .star:nth-child(4) { top: 80%; left: 80%; animation: twinkle 2.2s infinite 1.5s; }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(0.8); }
+        }
+
+        .coin {
+            width: 24px;
+            height: 24px;
+            background: #5c94fc;
+            border: 3px solid #0000;
+            
+            display: inline-block;
+            vertical-align: middle;
+            margin: 0 5px;
+        }
+
+        .process-scroll::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        .process-scroll::-webkit-scrollbar-track {
+            background: #f5f5f5;
+            border: 2px solid #000;
+        }
+
+        .process-scroll::-webkit-scrollbar-thumb {
+            background: #5c94fc;
+            border: 2px solid #000;
+        }
+
+        .process-scroll::-webkit-scrollbar-thumb:hover {
+            background: #7dabff;
+        }
+
+        .timeline {
+        position: relative;
+        padding-left: 30px;
+        margin: 20px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: #000;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+            padding-left: 25px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -22px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            background: #ff4444;
+            border: 3px solid #000;
+        }
+
+        .timeline-year {
+            font-size: 0.7em;
+            color: #ff4444;
+            margin-bottom: 8px;
+        }
+
+        .timeline-content {
+            background: #f5f5f5;
+            border: 3px solid #000;
+            padding: 15px;
+            font-size: 0.5em;
+            line-height: 1.8;
+        }
+
+        .formula-box {
+            background: #000;
+            color: #00ff00;
+            border: 4px solid #00ff00;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.6em;
+            text-align: center;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .comparison-card {
+            background: #f5f5f5;
+            border: 4px solid #000;
+            padding: 20px;
+        }
+
+        .comparison-title {
+            font-size: 0.6em;
+            color: #5c94fc;
+            margin-bottom: 15px;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .comparison-content {
+            font-size: 0.45em;
+            line-height: 1.8;
+            color: #000;
+        }
+
+        .cipher-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.45em;
+            background: #fff;
+        }
+
+        .cipher-table th,
+        .cipher-table td {
+            border: 2px solid #000;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .cipher-table th {
+            background: #5c94fc;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .cipher-table td {
+            background: #f5f5f5;
+        }
+
+        .cipher-table .highlight {
+            background: #ffd700;
+            font-weight: bold;
+        }
+
+        .try-it-box {
+            background: #ffe066;
+            border: 5px solid #000;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 6px 6px 0 rgba(0,0,0,0.3);
+        }
+
+        .try-it-title {
+            font-size: 0.7em;
+            color: #ff4444;
+            margin-bottom: 15px;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .try-it-input {
+            width: 100%;
+            padding: 10px;
+            border: 3px solid #000;
+            background: #fff;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5em;
+            margin-bottom: 10px;
+        }
+
+        .try-it-result {
+            background: #fff;
+            border: 3px solid #000;
+            padding: 15px;
+            margin-top: 15px;
+            font-size: 0.5em;
+            line-height: 1.8;
+            min-height: 60px;
+            white-space: pre-wrap;
+        }
+
+        .step-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .step-box {
+            flex: 1;
+            min-width: 150px;
+            background: #5c94fc;
+            border: 4px solid #000;
+            padding: 15px;
+            text-align: center;
+            color: #fff;
+            font-size: 0.45em;
+            line-height: 1.6;
+        }
+
+        .step-arrow {
+            font-size: 1.5em;
+            color: #000;
+            font-weight: bold;
+        }
+
+        .code-snippet {
+            background: #1a1a1a;
+            border: 4px solid #000;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.75em;
+            color: #00ff00;
+            line-height: 1.8;
+            overflow-x: auto;
+        }
+
+        .info-box {
+            background: #e6f3ff;
+            border: 4px solid #5c94fc;
+            padding: 20px;
+            margin: 20px 0;
+            font-size: 0.5em;
+            line-height: 1.8;
+        }
+
+        .info-box-title {
+            color: #5c94fc;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+            .step-diagram {
+                flex-direction: column;
+            }
+            .step-arrow {
+                transform: rotate(90deg);
+            }
+        }
+
+
+
+        /* ======GAME======== */
+
+        .game-container {
+        text-align: center;
+        }
+
+        .game-level {
+            display: none;
+        }
+
+        .game-level.active {
+            display: block;
+        }
+
+        .game-header {
+            background: #ff4444;
+            border: 4px solid #000;
+            padding: 20px;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .game-title {
+            font-size: 0.8em;
+            margin-bottom: 10px;
+        }
+
+        .game-score {
+            font-size: 0.5em;
+            color: #ffd700;
+        }
+
+        .cipher-display {
+            background: #000;
+            color: #00ff00;
+            border: 4px solid #00ff00;
+            padding: 25px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            letter-spacing: 3px;
+        }
+
+        .game-input {
+            width: 80%;
+            padding: 15px;
+            border: 4px solid #000;
+            background: #fff;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.6em;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .game-hint {
+            background: #ffe066;
+            border: 3px solid #000;
+            padding: 15px;
+            margin: 15px 0;
+            font-size: 0.5em;
+            line-height: 1.8;
+        }
+
+        .game-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .game-btn {
+            padding: 15px 25px;
+            border: 4px solid #000;
+            background: #5c94fc;
+            color: #fff;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5em;
+            cursor: pointer;
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.3);
+            transition: all 0.1s;
+        }
+
+        .game-btn:hover {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+        }
+
+        .game-btn.hint-btn {
+            background: #ffd700;
+            color: #000;
+        }
+
+        .game-btn.submit-btn {
+            background: #ff4444;
+        }
+
+        .success-message {
+            background: #90ee90;
+            border: 5px solid #000;
+            padding: 30px;
+            margin: 20px 0;
+            font-size: 0.6em;
+            animation: bounce 0.5s;
+        }
+
+        .fail-message {
+            background: #ff6b6b;
+            border: 5px solid #000;
+            padding: 20px;
+            margin: 20px 0;
+            color: #fff;
+            font-size: 0.5em;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #ffd700;
+            position: absolute;
+            animation: fall 2s linear;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .timer-display {
+            font-size: 1.5em;
+            color: #ff4444;
+            margin: 20px 0;
+            padding: 15px;
+            background: #000;
+            border: 4px solid #ff4444;
+        }
+
+        .question-box {
+            background: #f5f5f5;
+            border: 4px solid #000;
+            padding: 20px;
+            margin: 15px 0;
+            font-size: 0.55em;
+            line-height: 1.8;
+            min-height: 100px;
+        }
+
+        .leaderboard {
+            background: #fff;
+            border: 4px solid #000;
+            padding: 20px;
+            margin: 20px 0;
+            font-size: 0.5em;
+        }
+
+        .leaderboard-item {
+            padding: 10px;
+            border-bottom: 2px solid #000;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .pixel-image-game {
+            max-width: 300px;
+            margin: 20px auto;
+            border: 4px solid #000;
+            image-rendering: pixelated;
+            filter: blur(8px);
+            transition: filter 0.5s;
+        }
+
+        .pixel-image-game.unlocked {
+            filter: blur(0);
+        }
+
+        .level-select {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .level-card {
+            background: #fff;
+            border: 5px solid #000;
+            padding: 30px 20px;
+            cursor: pointer;
+            transition: all 0.1s;
+            box-shadow: 5px 5px 0 rgba(0,0,0,0.3);
+            text-align: center;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .level-card:nth-child(4) {
+            grid-column: 1 / 4;
+            background: #fff;
+            border: 5px solid #000;
+        }
+
+        #level-4 .game-input {
+            width: 90%;
+            max-width: 500px;
+            padding: 18px;
+            border: 4px solid #000;
+            background: #fff;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.6em;
+            margin: 25px auto;
+            text-align: center;
+            display: block;
+            text-transform: uppercase;
+        }
+        .level-card:hover {
+            transform: translate(2px, 2px);
+            box-shadow: 3px 3px 0 rgba(0,0,0,0.3);
+            background: #ffe066;
+        }
+
+        .level-card.locked {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .level-number {
+            font-size: 0.8em;
+            color: #ff4444;
+            margin-bottom: 10px;
+        }
+
+        .level-name {
+            font-size: 0.5em;
+            color: #000;
+            line-height: 1.6;
+        }
+
+        .vigenere-grid {
+            display: grid;
+            grid-template-columns: repeat(13, 1fr);
+            gap: 2px;
+            margin: 20px auto;
+            max-width: 600px;
+            background: #000;
+            border: 4px solid #000;
+            padding: 5px;
+        }
+
+        .vigenere-cell {
+            background: #f5f5f5;
+            border: 2px solid #000;
+            padding: 8px;
+            text-align: center;
+            font-size: 0.4em;
+            cursor: pointer;
+            transition: all 0.1s;
+        }
+
+        .vigenere-cell:hover {
+            background: #ffe066;
+            transform: scale(1.1);
+        }
+
+        .vigenere-cell.highlight {
+            background: #ff4444;
+            color: #fff;
+            animation: pulse 0.5s;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .pixel-analyzer {
+            background: #f5f5f5;
+            border: 4px solid #000;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .analyzer-title {
+            font-size: 0.6em;
+            color: #5c94fc;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .analyzer-info {
+            background: #000;
+            color: #00ff00;
+            border: 3px solid #00ff00;
+            padding: 15px;
+            margin-top: 15px;
+            font-size: 0.5em;
+            text-align: center;
+        }
+
+        .pixel-image-game {
+            cursor: crosshair !important;
+        }
+
+@media (max-width: 768px) {
+   
+    body {
+        padding: 10px;
+    }
+
+    .container {
+        max-width: 100%;
+    }
+
+    .panel, .header {
+        padding: 15px; 
+    }
+
+    .header h1 {
+        font-size: 1.8em; 
+        letter-spacing: 1px;
+    }
+
+    .header p {
+        font-size: 0.7em; 
+    }
+
+    .tabs {
+        display: grid; 
+        grid-template-columns: 1fr 1fr; 
+        gap: 10px;
+    }
+
+    .section-header {
+        flex-direction: column; 
+        align-items: flex-start;
+    }
+
+    .icon {
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+
+    .section-title h2 {
+        font-size: 1em;
+    }
+
+    .section-title p {
+        font-size: 0.65em; 
+    }
+
+    .form-label, .form-input, .form-textarea, .file-upload-text, .output-text, .file-name {
+        font-size: 0.7em; 
+    }
+
+    .comparison-content, .timeline-content, .info-box, .process-item, .try-it-result {
+        font-size: 0.6em; 
+        line-height: 1.6;
+    }
+    
+    .tab, .btn, .mode-btn {
+        font-size: 0.7em;
+    }
+
+ 
+    .comparison-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .step-diagram {
+        flex-direction: column;
+    }
+
+    .step-arrow {
+        transform: rotate(90deg);
+        margin: 10px 0;
+    }
+
+   
+    .game-input {
+        width: 100%; 
+    }
+
+    .vigenere-grid {
+       
+        grid-template-columns: repeat(13, 30px); 
+        overflow-x: auto; 
+    }
+
+    .vigenere-cell {
+         padding: 5px; 
+         font-size: 0.5em;
+    }
+
+    .level-select {
+        grid-template-columns: 1fr; 
+    }
+
+    .level-card:nth-child(4) {
+        grid-column: auto; 
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="stars">
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>PIXecured</h1>
+            <p><span class="coin"></span> A Byte-Level Vigenère-Based Encryption and Decryption System via Pixel Mapping <span class="coin"></span></p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" data-tab="encrypt">ENCRYPT</button>
+            <button class="tab" data-tab="decrypt">DECRYPT</button>
+            <button class="tab" data-tab="tutorial">ABOUT</button>
+            <button class="tab" data-tab="games">GAMES</button>
+        </div>
+
+        <!-- ENCRYPT TAB -->
+        <div class="tab-content active" id="encrypt">
+            <div class="panel">
+                <div class="section-header">
+                    <div class="icon lock"></div>
+                    <div class="section-title">
+                        <h2>LOCK DATA</h2>
+                        <p>ENCODE MESSAGE OR FILE</p>
+                    </div>
+                </div>
+
+                <div class="mode-toggle">
+                    <button class="mode-btn active" data-mode="text">TEXT MODE</button>
+                    <button class="mode-btn" data-mode="file">FILE MODE</button>
+                </div>
+
+                <div id="text-mode">
+                    <div class="form-group">
+                        <label class="form-label">SECRET MESSAGE</label>
+                        <textarea class="form-textarea" id="plaintext" placeholder="Enter your secret message..."></textarea>
+                    </div>
+                </div>
+
+                <div id="file-mode" class="hidden">
+                    <div class="form-group">
+                        <label class="form-label">SELECT FILE</label>
+                        <div class="file-upload" id="file-upload">
+                            <div class="file-icon"></div>
+                            <div class="file-upload-text">CLICK TO UPLOAD FILE</div>
+                            <div class="file-name" id="file-name"></div>
+                        </div>
+                        <input type="file" id="file-input" class="hidden">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">PASSWORD</label>
+                    <input type="password" class="form-input" id="encrypt-password" placeholder="Enter password">
+                </div>
+
+                <button class="btn btn-primary" id="encrypt-btn">ENCRYPT NOW</button>
+
+                <div class="process-viewer hidden" id="process-viewer">
+                    <div class="process-title">ENCRYPTION PROCESS</div>
+                    <div class="process-scroll" id="process-content"></div>
+                </div>
+
+                <div class="output-box hidden" id="encrypt-output">
+                    <canvas id="encrypt-canvas" class="output-image"></canvas>
+                    <button class="btn btn-secondary" id="download-btn">DOWNLOAD IMAGE</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- DECRYPT TAB -->
+        <div class="tab-content" id="decrypt">
+            <div class="panel">
+                <div class="section-header">
+                    <div class="icon unlock"></div>
+                    <div class="section-title">
+                        <h2>UNLOCK DATA</h2>
+                        <p>DECODE HIDDEN MESSAGE</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">ENCRYPTED IMAGE</label>
+                    <div class="file-upload" id="image-upload">
+                        <div class="image-icon"></div>
+                        <div class="file-upload-text">UPLOAD ENCRYPTED PNG</div>
+                        <div class="file-name" id="image-name"></div>
+                    </div>
+                    <input type="file" id="image-input" class="hidden" accept="image/png">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">PASSWORD</label>
+                    <input type="password" class="form-input" id="decrypt-password" placeholder="Enter password">
+                </div>
+
+                <button class="btn btn-primary" id="decrypt-btn">DECRYPT NOW</button>
+
+                <div class="output-box hidden" id="decrypt-output">
+                    <label class="form-label">DECRYPTED CONTENT:</label>
+                    <div class="output-text" id="decrypted-text"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TUTORIAL TAB -->
+<div class="tab-content" id="tutorial">
+    <div class="panel">
+        <div class="section-header">
+            <div class="icon lock"></div>
+            <div class="section-title">
+                <h2>VIGENÈRE CIPHER</h2>
+                <p>FROM 1500s TO PIXELS</p>
+            </div>
+        </div>
+
+        <!-- SECTION 1: HISTORY -->
+        <h3 style="font-size: 0.8em; color: #ff4444; margin: 30px 0 20px 0; text-transform: uppercase;">HISTORY OF VIGENÈRE</h3>
+        
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-year">1553</div>
+                <div class="timeline-content">
+                    Giovan Battista Bellaso first described the cipher in his book "La cifra del. Sig. Giovan Battista Bellaso"
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1586</div>
+                <div class="timeline-content">
+                    Blaise de Vigenère published his own description of the cipher. Though he didn't invent it, the cipher was later named after him.
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1600s-1800s</div>
+                <div class="timeline-content">
+                    Known as "le chiffre indéchiffrable" (the indecipherable cipher) - considered unbreakable for centuries!
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1863</div>
+                <div class="timeline-content">
+                    Friedrich Kasiski published a method to crack Vigenère using frequency analysis and key length detection.
+                </div>
+            </div>
+          
+        </div>
+
+        <!-- SECTION 2: HOW IT WORKS -->
+        <h3 style="font-size: 0.8em; color: #ff4444; margin: 40px 0 20px 0; text-transform: uppercase;">HOW IT WORKS</h3>
+        
+        <div class="info-box">
+            <div class="info-box-title">POLYALPHABETIC SUBSTITUTION</div>
+            Unlike Caesar cipher (shifts all letters by same amount), Vigenère uses a KEY to shift each letter differently. Each position in the key determines how much to shift that letter!
+        </div>
+
+        <div class="formula-box">
+            ENCRYPTION: C = (P + K) mod 26<br>
+            DECRYPTION: P = (C - K) mod 26<br><br>
+            WHERE C = CIPHERTEXT, P = PLAINTEXT, K = KEY
+        </div>
+
+        <div style="font-size: 0.55em; margin: 20px 0; line-height: 1.8;">
+            <strong>EXAMPLE:</strong> Encrypt "HELLO" with key "KEY"
+        </div>
+
+        <table class="cipher-table">
+            <thead>
+                <tr>
+                    <th>POSITION</th>
+                    <th>PLAINTEXT</th>
+                    <th>KEY</th>
+                    <th>SHIFT</th>
+                    <th>CIPHERTEXT</th>
+                    <th>CALCULATION</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>0</td>
+                    <td class="highlight">H (7)</td>
+                    <td>K (10)</td>
+                    <td>+10</td>
+                    <td class="highlight">R (17)</td>
+                    <td>(7 + 10) mod 26 = 17</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td class="highlight">E (4)</td>
+                    <td>E (4)</td>
+                    <td>+4</td>
+                    <td class="highlight">I (8)</td>
+                    <td>(4 + 4) mod 26 = 8</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td class="highlight">L (11)</td>
+                    <td>Y (24)</td>
+                    <td>+24</td>
+                    <td class="highlight">J (9)</td>
+                    <td>(11 + 24) mod 26 = 9</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td class="highlight">L (11)</td>
+                    <td>K (10)</td>
+                    <td>+10</td>
+                    <td class="highlight">V (21)</td>
+                    <td>(11 + 10) mod 26 = 21</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td class="highlight">O (14)</td>
+                    <td>E (4)</td>
+                    <td>+4</td>
+                    <td class="highlight">S (18)</td>
+                    <td>(14 + 4) mod 26 = 18</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div style="text-align: center; font-size: 0.6em; margin: 20px 0; padding: 15px; background: #90ee90; border: 4px solid #000;">
+            <strong>RESULT:</strong> "HELLO" + "KEY" = "RIJVS"
+        </div>
+
+        <!-- SECTION 3: FROM PAPER TO PIXELS -->
+        <h3 style="font-size: 0.8em; color: #ff4444; margin: 40px 0 20px 0; text-transform: uppercase;">FROM PAPER TO PIXELS</h3>
+
+        <div class="comparison-grid">
+            <div class="comparison-card">
+                <div class="comparison-title">TRADITIONAL VIGENÈRE</div>
+                <div class="comparison-content">
+                    • Works with 26 letters (A-Z)<br>
+                    • Uses modulo 26 arithmetic<br>
+                    • Creates encrypted text<br>
+                    • Limited to alphabetic characters<br>
+                    • Visible ciphertext
+                </div>
+            </div>
+            <div class="comparison-card">
+                <div class="comparison-title">PIXECURED VIGENÈRE</div>
+                <div class="comparison-content">
+                    • Works with 256 byte values (0-255)<br>
+                    • Uses modulo 256 arithmetic<br>
+                    • Creates encrypted bytes<br>
+                    • Supports ANY file type<br>
+                    • Hidden in pixel colors
+                </div>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <div class="info-box-title">THE MODERNIZATION</div>
+            PIXecured extends Vigenère's core concept: instead of shifting letters A-Z, we shift BYTES (0-255). Then we map every 3 encrypted bytes to RGB pixel values, creating an innocent-looking image that secretly contains your data!
+        </div>
+
+        <!-- SECTION 4 -->
+        <h3 style="font-size: 0.8em; color: #ff4444; margin: 40px 0 20px 0; text-transform: uppercase;">HOW PIXECURED WORKS</h3>
+
+        <div class="step-diagram">
+            <div class="step-box">
+                <strong>1. INPUT</strong><br>
+                Your text or file converted to bytes
+            </div>
+            <div class="step-arrow">→</div>
+            <div class="step-box">
+                <strong>2. ENCRYPT</strong><br>
+                Vigenère byte shifting with password
+            </div>
+            <div class="step-arrow">→</div>
+            <div class="step-box">
+                <strong>3. MAP TO RGB</strong><br>
+                Every 3 bytes = 1 pixel color
+            </div>
+            <div class="step-arrow">→</div>
+            <div class="step-box">
+                <strong>4. OUTPUT</strong><br>
+                PNG image with hidden data
+            </div>
+        </div>
+
+        <div class="code-snippet">
+        // ENCRYPTION ALGORITHM<br>
+        function encryptBytes(bytes, password) {<br>
+        &nbsp;&nbsp;const key = textToBytes(password);<br>
+        &nbsp;&nbsp;const result = new Array(bytes.length);<br>
+        &nbsp;&nbsp;<br>
+        &nbsp;&nbsp;for (let i = 0; i < bytes.length; i++) {<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;// Vigenère formula: (plaintext + key) mod 256<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;result[i] = (bytes[i] + key[i % key.length]) % 256;<br>
+        &nbsp;&nbsp;}<br>
+        &nbsp;&nbsp;<br>
+        &nbsp;&nbsp;return result;<br>
+        }<br>
+        <br>
+        // PIXEL MAPPING<br>
+        for (let i = 0; i < encryptedBytes.length; i += 3) {<br>
+        &nbsp;&nbsp;pixel.R = encryptedBytes[i];&nbsp;&nbsp;&nbsp;// Red channel<br>
+        &nbsp;&nbsp;pixel.G = encryptedBytes[i+1]; // Green channel<br>
+        &nbsp;&nbsp;pixel.B = encryptedBytes[i+2]; // Blue channel<br>
+        }
+        </div>
+
+        <div style="font-size: 0.5em; line-height: 1.8; margin: 20px 0;">
+            <strong>KEY FEATURES:</strong><br>
+            • Password is repeated cyclically to match data length<br>
+            • Each byte independently encrypted (polyalphabetic)<br>
+            • Modulo 256 ensures values stay in valid byte range<br>
+            • RGB mapping makes encrypted data look like random image<br>
+            • Completely reversible with correct password
+        </div>
+
+        <!-- TRY IT YOURSELF -->
+        <div class="try-it-box">
+            <div class="try-it-title">TRY IT YOURSELF</div>
+            
+            <div class="form-group">
+                <label class="form-label">MESSAGE:</label>
+                <input type="text" class="try-it-input" id="demo-text" placeholder="Enter text to encrypt" maxlength="20">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">PASSWORD:</label>
+                <input type="text" class="try-it-input" id="demo-key" placeholder="Enter password" maxlength="10">
+            </div>
+            
+            <button class="btn" id="demo-encrypt-btn" style="margin-bottom: 15px;">ENCRYPT DEMO</button>
+            
+            <div class="try-it-result" id="demo-result">
+                Results will appear here...
+            </div>
+        </div>
+
+    </div>
+</div>
+
+    <!-- GAMES TAB -->
+    <div class="tab-content" id="games">
+        <div class="panel">
+            <div class="section-header">
+                <div class="icon lock"></div>
+                <div class="section-title">
+                    <h2>CIPHER QUEST</h2>
+                    <p>TEST YOUR SKILLS</p>
+                </div>
+            </div>
+
+            <div class="game-container">
+                <!-- LEVEL SELECT -->
+                <div id="level-select" class="game-level active">
+                    <div class="game-header">
+                        <div class="game-title">SELECT YOUR MISSION</div>
+                        <div class="game-score">BEST SCORE: <span id="best-score">0</span> PTS</div>
+                    </div>
+
+                    <div class="level-select">
+                        <div class="level-card" onclick="startLevel(1)">
+                            <div class="level-number">LEVEL 1</div>
+                            <div class="level-name">CIPHER SCHOOL</div>
+                        </div>
+                        <div class="level-card" onclick="startLevel(2)">
+                            <div class="level-number">LEVEL 2</div>
+                            <div class="level-name">KEY HUNTER</div>
+                        </div>
+                        <div class="level-card" onclick="startLevel(3)">
+                            <div class="level-number">LEVEL 3</div>
+                            <div class="level-name">PIXEL DECRYPTOR</div>
+                        </div>
+                        <div class="level-card" onclick="startLevel(4)">
+                            <div class="level-number">BONUS</div>
+                            <div class="level-name">RACE AGAINST TIME</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LEVEL 1: CIPHER SCHOOL -->
+                <div id="level-1" class="game-level">
+                    <div class="game-header">
+                        <div class="game-title">LEVEL 1: CIPHER WHEEL</div>
+                        <div class="game-score">SCORE: <span id="score-1">0</span> PTS</div>
+                    </div>
+
+                    <div class="game-hint">
+                        Click letters to see how Vigenère encryption works!
+                    </div>
+
+                    <!-- Interactive Cipher Table -->
+                    <div class="vigenere-grid" id="vigenere-grid"></div>
+
+                    <div class="cipher-display" id="level1-demo">
+                        PLAINTEXT: <span id="demo-plain">HELLO</span><br>
+                        KEY: <span id="demo-key">KEY</span><br>
+                        CIPHERTEXT: <span id="demo-cipher">RIJVS</span>
+                    </div>
+
+                    <div class="game-hint" style="background: #90ee90;">
+                        Now decrypt: <strong>RIJVS UYVJN</strong> with key "KEY"
+                    </div>
+
+                    <input type="text" id="level1-input" class="game-input" placeholder="ENTER DECRYPTED MESSAGE">
+
+                    <div class="game-buttons">
+                        <button class="game-btn submit-btn" onclick="checkLevel1()">SUBMIT ANSWER</button>
+                        <button class="game-btn hint-btn" onclick="showCipherWheel()">SHOW WHEEL</button>
+                        <button class="game-btn" onclick="backToSelect()">BACK TO MENU</button>
+                    </div>
+
+                    <div id="level1-result"></div>
+                </div>
+
+                <!-- LEVEL 2: KEY HUNTER -->
+                <div id="level-2" class="game-level">
+                    <div class="game-header">
+                        <div class="game-title">LEVEL 2: KEY HUNTER</div>
+                        <div class="game-score">SCORE: <span id="score-2">0</span> PTS</div>
+                    </div>
+
+                    <div class="game-hint">
+                        Find the secret key! The ciphertext will reveal itself when you enter the correct password.
+                    </div>
+
+                    <div class="cipher-display">
+                        CIPHERTEXT: AQE LQVNAN<br>
+                        CLUE: 3-LETTER WORD FROM PIXECURE'S MOTTO
+                    </div>
+
+                    <input type="text" id="level2-input" class="game-input" placeholder="ENTER THE KEY" maxlength="10">
+
+                    <div class="game-buttons">
+                        <button class="game-btn submit-btn" onclick="checkLevel2()">TRY KEY</button>
+                        <button class="game-btn hint-btn" onclick="showHint2()">HINT (-25 PTS)</button>
+                        <button class="game-btn" onclick="backToSelect()">BACK TO MENU</button>
+                    </div>
+
+                    <div id="level2-result"></div>
+                    <div id="hint2-display" style="display: none;" class="game-hint"></div>
+                </div>
+
+                <!-- LEVEL 3: BYTE DETECTIVE -->
+                <div id="level-3" class="game-level">
+                    <div class="game-header">
+                        <div class="game-title">LEVEL 3: BYTE DETECTIVE</div>
+                        <div class="game-score">SCORE: <span id="score-3">0</span> PTS</div>
+                    </div>
+
+                    <div class="game-hint">
+                        Decrypt these byte values! Each encrypted byte was created using (plaintext + key) mod 256
+                    </div>
+
+                    <div class="cipher-display">
+                        ENCRYPTED BYTES: [181, 162, 177, 171, 166, 183]<br>
+                        KEY: "PIXEL"<br><br>
+                        FORMULA: plaintext = (encrypted - key) mod 256
+                    </div>
+
+                    <div class="try-it-box">
+                        <div class="try-it-title">BYTE CALCULATOR</div>
+                        
+                        <div style="font-size: 0.45em; margin-bottom: 15px; line-height: 1.8;">
+                            <strong>KEY BYTES:</strong><br>
+                            P=80, I=73, X=88, E=69, L=76<br><br>
+                            <strong>BYTE 0:</strong> (181 - 80) mod 256 = ?<br>
+                            <strong>BYTE 1:</strong> (162 - 73) mod 256 = ?<br>
+                            <strong>BYTE 2:</strong> (177 - 88) mod 256 = ?<br>
+                            <strong>Continue the pattern...</strong>
+                        </div>
+
+                        <table class="cipher-table" style="margin: 15px 0;">
+                            <tr>
+                                <th>INDEX</th>
+                                <th>ENCRYPTED</th>
+                                <th>KEY CHAR</th>
+                                <th>KEY VALUE</th>
+                                <th>DECRYPTED</th>
+                                <th>ASCII CHAR</th>
+                            </tr>
+                            <tr>
+                                <td>0</td>
+                                <td>181</td>
+                                <td>P</td>
+                                <td>80</td>
+                                <td class="highlight">101</td>
+                                <td class="highlight">e</td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>162</td>
+                                <td>I</td>
+                                <td>73</td>
+                                <td>?</td>
+                                <td>?</td>
+                            </tr>
+                            <tr>
+                                <td colspan="6" style="background: #ffe066;">Complete the table and find the word!</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <input type="text" id="level3-input" class="game-input" placeholder="ENTER DECRYPTED MESSAGE" maxlength="10">
+
+                    <div class="game-buttons">
+                        <button class="game-btn submit-btn" onclick="checkLevel3()">SUBMIT ANSWER</button>
+                        <button class="game-btn hint-btn" onclick="showHint3()">HINT (-25 PTS)</button>
+                        <button class="game-btn" onclick="backToSelect()">BACK TO MENU</button>
+                    </div>
+
+                    <div id="level3-result"></div>
+                    <div id="hint3-display" style="display: none;" class="game-hint"></div>
+                </div>
+
+                <!-- LEVEL 4: RACE AGAINST TIME -->
+                <div id="level-4" class="game-level">
+                    <div class="game-header">
+                        <div class="game-title">BONUS: RACE AGAINST TIME</div>
+                        <div class="game-score">SCORE: <span id="score-4">0</span> PTS</div>
+                    </div>
+
+                    <div class="timer-display" id="timer">30</div>
+
+                    <div class="question-box" id="quiz-question">
+                        Click START to begin!
+                    </div>
+
+                    <input type="text" id="level4-input" class="game-input" placeholder="YOUR ANSWER" style="display: none;">
+
+                    <div class="game-buttons">
+                        <button class="game-btn submit-btn" id="quiz-start" onclick="startQuiz()">START QUIZ</button>
+                        <button class="game-btn submit-btn" id="quiz-submit" onclick="checkQuiz()" style="display: none;">SUBMIT</button>
+                        <button class="game-btn" onclick="backToSelect()">BACK TO MENU</button>
+                    </div>
+
+                    <div id="level4-result"></div>
+                </div>
+            </div>
+        </div>
+</div>
+    </div>
+
+    <script>
+        // Tab switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.tab).classList.add('active');
+            });
+        });
+
+        // Mode toggle
+        document.querySelectorAll('.mode-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                if (btn.dataset.mode === 'text') {
+                    document.getElementById('text-mode').classList.remove('hidden');
+                    document.getElementById('file-mode').classList.add('hidden');
+                } else {
+                    document.getElementById('text-mode').classList.add('hidden');
+                    document.getElementById('file-mode').classList.remove('hidden');
+                }
+            });
+        });
+
+        // File upload handlers
+        let selectedFile = null;
+        const fileUpload = document.getElementById('file-upload');
+        const fileInput = document.getElementById('file-input');
+        const fileName = document.getElementById('file-name');
+
+        fileUpload.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', (e) => {
+            selectedFile = e.target.files[0];
+            if (selectedFile) {
+                fileName.textContent = selectedFile.name;
+                fileUpload.classList.add('active');
+            }
+        });
+
+        // Image upload handler
+        let selectedImage = null;
+        const imageUpload = document.getElementById('image-upload');
+        const imageInput = document.getElementById('image-input');
+        const imageName = document.getElementById('image-name');
+
+        imageUpload.addEventListener('click', () => imageInput.click());
+        imageInput.addEventListener('change', (e) => {
+            selectedImage = e.target.files[0];
+            if (selectedImage) {
+                imageName.textContent = selectedImage.name;
+                imageUpload.classList.add('active');
+            }
+        });
+
+        // Encryption with process tracking
+        function encryptBytes(bytes, password, showProcess = false) {
+            const key = new TextEncoder().encode(password);
+            const result = new Uint8Array(bytes.length);
+            const processData = [];
+            
+            for (let i = 0; i < bytes.length; i++) {
+                const plainByte = bytes[i];
+                const keyByte = key[i % key.length];
+                const encryptedByte = (plainByte + keyByte) % 256;
+                result[i] = encryptedByte;
+                
+                if (showProcess && i < 50) {
+                    processData.push({
+                        index: i,
+                        plainChar: String.fromCharCode(plainByte),
+                        plainValue: plainByte,
+                        keyChar: String.fromCharCode(keyByte),
+                        keyValue: keyByte,
+                        encryptedValue: encryptedByte
+                    });
+                }
+            }
+            
+            if (showProcess && processData.length > 0) {
+                displayProcess(processData, result);
+            }
+            
+            return result;
+        }
+
+        function displayProcess(processData, encryptedBytes) {
+            const processContent = document.getElementById('process-content');
+            processContent.innerHTML = '';
+            
+            processData.forEach(item => {
+                const processItem = document.createElement('div');
+                processItem.className = 'process-item';
+                
+                const displayChar = item.plainChar.replace(/\n/g, '\\n').replace(/\r/g, '\\r').replace(/\t/g, '\\t').replace(/ /g, '[SPACE]');
+                const displayKeyChar = item.keyChar.replace(/\n/g, '\\n').replace(/\r/g, '\\r').replace(/\t/g, '\\t').replace(/ /g, '[SPACE]');
+                
+                processItem.innerHTML = `
+                    <div class="process-row">
+                        <span><span class="process-label">INDEX:</span> <span class="process-value">${item.index}</span></span>
+                    </div>
+                    <div class="process-row">
+                        <span><span class="process-label">CHAR:</span> <span class="process-value">'${displayChar}'</span></span>
+                        <span><span class="process-label">VALUE:</span> <span class="process-value">${item.plainValue}</span></span>
+                    </div>
+                    <div class="process-row">
+                        <span><span class="process-label">KEY:</span> <span class="process-value">'${displayKeyChar}'</span></span>
+                        <span><span class="process-label">VAL:</span> <span class="process-value">${item.keyValue}</span></span>
+                    </div>
+                    <div class="process-row">
+                        <span><span class="process-label">ENCRYPTED:</span> <span class="process-value">${item.encryptedValue}</span></span>
+                        <span><span class="process-label">HEX:</span> <span class="process-value">0x${item.encryptedValue.toString(16).toUpperCase().padStart(2, '0')}</span></span>
+                    </div>
+                    <div class="process-row">
+                        <span><span class="process-label">FORMULA:</span> <span class="process-value">(${item.plainValue} + ${item.keyValue}) % 256 = ${item.encryptedValue}</span></span>
+                    </div>
+                `;
+                
+                processContent.appendChild(processItem);
+            });
+            
+            // Add RGB mapping section
+            const rgbSection = document.createElement('div');
+            rgbSection.className = 'process-item';
+            rgbSection.style.background = '#e6f3ff';
+            rgbSection.innerHTML = '<div class="process-row"><span class="process-label">📊 RGB PIXEL MAPPING:</span></div>';
+            processContent.appendChild(rgbSection);
+            
+            for (let i = 0; i < Math.floor(encryptedBytes.length / 3); i++){
+                const r = encryptedBytes[i * 3] || 0;
+                const g = encryptedBytes[i * 3 + 1] || 0;
+                const b = encryptedBytes[i * 3 + 2] || 0;
+                
+                const rgbItem = document.createElement('div');
+                rgbItem.className = 'process-item';
+                rgbItem.innerHTML = `
+                    <div class="process-row">
+                        <span><span class="process-label">PIXEL ${i}:</span></span>
+                    </div>
+                    <div class="process-row">
+                        <span><span class="process-label">R:</span> <span class="process-value">${r}</span></span>
+                        <span><span class="process-label">G:</span> <span class="process-value">${g}</span></span>
+                        <span><span class="process-label">B:</span> <span class="process-value">${b}</span></span>
+                        <span class="rgb-display" style="background: rgb(${r},${g},${b})"></span>
+                    </div>
+                    <div class="process-row">
+                        <span><span class="process-label">RGB:</span> <span class="process-value">rgb(${r}, ${g}, ${b})</span></span>
+                    </div>
+                `;
+                processContent.appendChild(rgbItem);
+            }
+            
+            document.getElementById('process-viewer').classList.remove('hidden');
+        }
+
+        function decryptBytes(bytes, password) {
+            const key = new TextEncoder().encode(password);
+            const result = new Uint8Array(bytes.length);
+            for (let i = 0; i < bytes.length; i++) {
+                result[i] = (bytes[i] - key[i % key.length] + 256) % 256;
+            }
+            return result;
+        }
+
+        function bytesToImage(bytes) {
+            const padded = new Uint8Array(Math.ceil(bytes.length / 3) * 3);
+            padded.set(bytes);
+            
+            const pixelCount = padded.length / 3;
+            const size = Math.ceil(Math.sqrt(pixelCount));
+            const canvas = document.getElementById('encrypt-canvas');
+            canvas.width = size;
+            canvas.height = size;
+            
+            const ctx = canvas.getContext('2d');
+            const imageData = ctx.createImageData(size, size);
+            
+            let byteIndex = 0;
+            for (let i = 0; i < imageData.data.length; i += 4) {
+                if (byteIndex < padded.length) {
+                    imageData.data[i] = padded[byteIndex++];
+                    imageData.data[i + 1] = padded[byteIndex++];
+                    imageData.data[i + 2] = padded[byteIndex++];
+                    imageData.data[i + 3] = 255;
+                }
+            }
+            
+            ctx.putImageData(imageData, 0, 0);
+        }
+
+        function imageToBytes(canvas) {
+            const ctx = canvas.getContext('2d');
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const bytes = [];
+            
+            for (let i = 0; i < imageData.data.length; i += 4) {
+                bytes.push(imageData.data[i]);
+                bytes.push(imageData.data[i + 1]);
+                bytes.push(imageData.data[i + 2]);
+            }
+            
+            while (bytes.length >= 3 &&
+                   bytes[bytes.length - 1] === 0 &&
+                   bytes[bytes.length - 2] === 0 &&
+                   bytes[bytes.length - 3] === 0) {
+                bytes.pop();
+                bytes.pop();
+                bytes.pop();
+            }
+            
+            return new Uint8Array(bytes);
+        }
+
+        // --- MODE SWITCH HANDLER ---
+        document.querySelectorAll('.mode-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                
+                document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+           
+                const processViewer = document.getElementById('process-viewer');
+                processViewer.classList.add('hidden');
+
+                document.getElementById('encrypt-password').value = '';
+                document.getElementById('decrypt-password').value = '';
+
+                document.getElementById('plaintext').value = '';
+                document.getElementById('decrypted-text').value = '';
+                document.getElementById('file-name').textContent = 'No file chosen';
+                window.selectedFile = null;
+
+                if (btn.dataset.mode === 'text') {
+                    document.getElementById('text-mode').classList.remove('hidden');
+                    document.getElementById('file-mode').classList.add('hidden');
+                } else {
+                    document.getElementById('text-mode').classList.add('hidden');
+                    document.getElementById('file-mode').classList.remove('hidden');
+                }
+            });
+        });
+
+
+        // Encrypt button
+        document.getElementById('encrypt-btn').addEventListener('click', async () => {
+            const password = document.getElementById('encrypt-password').value;
+            if (!password) {
+                alert('Please enter a password');
+                return;
+            }
+
+            const isFileMode = !document.getElementById('file-mode').classList.contains('hidden');
+
+            document.getElementById('process-viewer').classList.add('hidden');
+
+            let plainBytes;
+            if (isFileMode) {
+                // File Mode
+                if (!selectedFile) {
+                    alert('Please select a file');
+                    return;
+                }
+
+                const fileBytes = new Uint8Array(await selectedFile.arrayBuffer());
+                const metadata = `FILE:${selectedFile.name}|${fileBytes.length}|`;
+                const metadataBytes = new TextEncoder().encode(metadata);
+
+                plainBytes = new Uint8Array(metadataBytes.length + fileBytes.length);
+                plainBytes.set(metadataBytes);
+                plainBytes.set(fileBytes, metadataBytes.length);
+
+                const encrypted = encryptBytes(plainBytes, password, false); // don't show process
+                bytesToImage(encrypted);
+            } else {
+                // Text Mode: show process
+                const plaintext = document.getElementById('plaintext').value;
+                if (!plaintext) {
+                    alert('Please enter a message');
+                    return;
+                }
+
+                plainBytes = new TextEncoder().encode(plaintext);
+                const encrypted = encryptBytes(plainBytes, password, true); // show process
+                bytesToImage(encrypted);
+            }
+
+            document.getElementById('encrypt-output').classList.remove('hidden');
+        });
+
+
+        // Download button
+        document.getElementById('download-btn').addEventListener('click', () => {
+            const canvas = document.getElementById('encrypt-canvas');
+            const link = document.createElement('a');
+            link.download = 'encrypted_pixecure.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        });
+
+        // Decrypt button
+        document.getElementById('decrypt-btn').addEventListener('click', async () => {
+            const password = document.getElementById('decrypt-password').value;
+            if (!password) {
+                alert('Please enter a password');
+                return;
+            }
+
+            if (!selectedImage) {
+                alert('Please select an encrypted image');
+                return;
+            }
+
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0);
+
+                const encryptedBytes = imageToBytes(canvas);
+                const decryptedBytes = decryptBytes(encryptedBytes, password);
+                
+                const decoder = new TextDecoder('utf-8', {fatal: false});
+                let text;
+                try {
+                    text = decoder.decode(decryptedBytes);
+                } catch (e) {
+                    document.getElementById('decrypted-text').textContent = 'DECRYPTION FAILED\n\nWRONG PASSWORD OR CORRUPTED FILE';
+                    document.getElementById('decrypt-output').classList.remove('hidden');
+                    return;
+                }
+                
+                if (text.startsWith('FILE:')) {
+                    const firstSep = text.indexOf('|');
+                    const secondSep = text.indexOf('|', firstSep + 1);
+                    
+                    if (firstSep === -1 || secondSep === -1) {
+                        document.getElementById('decrypted-text').textContent = 'DECRYPTION FAILED\n\nINVALID FILE FORMAT';
+                        document.getElementById('decrypt-output').classList.remove('hidden');
+                        return;
+                    }
+                    
+                    const fileName = text.substring(5, firstSep);
+                    const fileSizeStr = text.substring(firstSep + 1, secondSep);
+                    const fileSize = parseInt(fileSizeStr);
+                    
+                    if (isNaN(fileSize)) {
+                        document.getElementById('decrypted-text').textContent = 'DECRYPTION FAILED\n\nINVALID FILE SIZE';
+                        document.getElementById('decrypt-output').classList.remove('hidden');
+                        return;
+                    }
+                    
+                    const metadataLength = new TextEncoder().encode(text.substring(0, secondSep + 1)).length;
+                    const fileBytes = decryptedBytes.slice(metadataLength, metadataLength + fileSize);
+                    
+                    const blob = new Blob([fileBytes]);
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = fileName;
+                    link.click();
+                    
+                    document.getElementById('decrypted-text').textContent = `FILE DECRYPTED!\n\nFILE: ${fileName}\nSIZE: ${formatFileSize(fileSize)}\n\nDOWNLOAD STARTED`;
+                } else {
+                    document.getElementById('decrypted-text').textContent = text;
+                }
+                
+                document.getElementById('decrypt-output').classList.remove('hidden');
+            };
+            
+            img.onerror = () => {
+                alert('ERROR LOADING IMAGE');
+            };
+            
+            img.src = URL.createObjectURL(selectedImage);
+        });
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 BYTES';
+            const k = 1024;
+            const sizes = ['BYTES', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
+        }
+
+        // Demo encryption for tutorial
+document.getElementById('demo-encrypt-btn').addEventListener('click', () => {
+    const text = document.getElementById('demo-text').value;
+    const key = document.getElementById('demo-key').value;
+    const resultDiv = document.getElementById('demo-result');
+
+    if (!text || !key) {
+        resultDiv.textContent = 'Please enter both message and password!';
+        return;
+    }
+
+    const textBytes = new TextEncoder().encode(text);
+    const keyBytes = new TextEncoder().encode(key);
+    
+    let result = 'ENCRYPTION BREAKDOWN:\n\n';
+    
+    for (let i = 0; i < Math.min(textBytes.length, 10); i++) {
+        const plainByte = textBytes[i];
+        const keyByte = keyBytes[i % keyBytes.length];
+        const encryptedByte = (plainByte + keyByte) % 256;
+        
+        const plainChar = text[i].replace(/\n/g, '\\n').replace(/\r/g, '\\r').replace(/ /g, '[SP]');
+        const keyChar = key[i % key.length].replace(/\n/g, '\\n').replace(/\r/g, '\\r').replace(/ /g, '[SP]');
+        
+        result += `Position ${i}:\n`;
+        result += `  '${plainChar}' (${plainByte}) + '${keyChar}' (${keyByte})\n`;
+        result += `  = ${encryptedByte} (0x${encryptedByte.toString(16).toUpperCase().padStart(2, '0')})\n\n`;
+    }
+    
+    if (textBytes.length > 10) {
+        result += `... (showing first 10 of ${textBytes.length} characters)\n\n`;
+    }
+    
+    // Show RGB mapping
+    result += 'RGB PIXEL MAPPING:\n\n';
+    const encrypted = new Uint8Array(textBytes.length);
+    for (let i = 0; i < textBytes.length; i++) {
+        encrypted[i] = (textBytes[i] + keyBytes[i % keyBytes.length]) % 256;
+    }
+    
+    for (let i = 0; i < Math.min(Math.floor(encrypted.length / 3), 3); i++) {
+        const r = encrypted[i * 3] || 0;
+        const g = encrypted[i * 3 + 1] || 0;
+        const b = encrypted[i * 3 + 2] || 0;
+        result += `Pixel ${i}: RGB(${r}, ${g}, ${b})\n`;
+    }
+    
+    resultDiv.textContent = result;
+});
+
+
+
+//========GAMES===============
+
+// Game Variables
+let currentScore = 0;
+let hintsUsed = 0;
+let quizTimer = null;
+let timeLeft = 30;
+let currentQuestion = 0;
+let quizScore = 0;
+
+// Load best score
+let bestScore = parseInt(localStorage.getItem('pixecure-best-score') || '0');
+document.getElementById('best-score').textContent = bestScore;
+
+// Level Navigation
+function startLevel(levelNum) {
+    document.getElementById('level-select').classList.remove('active');
+    document.getElementById('level-' + levelNum).classList.add('active');
+    currentScore = 100;
+    hintsUsed = 0;
+    document.getElementById('score-' + levelNum).textContent = currentScore;
+    
+    // Initialize Level 3
+    if (levelNum === 3) {
+        initLevel3();
+    }
+}
+
+function backToSelect() {
+    document.querySelectorAll('.game-level').forEach(level => level.classList.remove('active'));
+    document.getElementById('level-select').classList.add('active');
+    
+    // Clear quiz timer if active
+    if (quizTimer) {
+        clearInterval(quizTimer);
+        quizTimer = null;
+    }
+}
+
+// LEVEL 1: Cipher School
+function initLevel1() {
+    const grid = document.getElementById('vigenere-grid');
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+    for (let i = 0; i < 26; i++) {
+        for (let j = 0; j < 13; j++) {
+            const cell = document.createElement('div');
+            cell.className = 'vigenere-cell';
+            const letter = letters[(i + j) % 26];
+            cell.textContent = letter;
+            cell.onclick = () => {
+                cell.classList.add('highlight');
+                setTimeout(() => cell.classList.remove('highlight'), 500);
+                playClick();
+            };
+            grid.appendChild(cell);
+        }
+    }
+}
+
+function showCipherWheel() {
+
+    const plain = "HELLO";
+    const key = "KEY";
+    let index = 0;
+    
+    const interval = setInterval(() => {
+        if (index >= plain.length) {
+            clearInterval(interval);
+            return;
+        }
+        
+        const p = plain.charCodeAt(index) - 65;
+        const k = key.charCodeAt(index % key.length) - 65;
+        const c = (p + k) % 26;
+        
+        document.getElementById('demo-cipher').innerHTML = 
+            plain.substring(0, index) + 
+            `<span style="color: #ff4444;">${String.fromCharCode(c + 65)}</span>` +
+            plain.substring(index + 1);
+        
+        playSuccess();
+        index++;
+    }, 500);
+}
+
+function checkLevel1() {
+    const input = document.getElementById('level1-input').value.toUpperCase().trim();
+    const correct = "HELLO WORLD";
+    const resultDiv = document.getElementById('level1-result');
+    
+    if (input === correct) {
+        playSuccess();
+        createConfetti();
+        
+        resultDiv.innerHTML = `
+            <div class="success-message">
+                🎉 CORRECT!<br><br>
+                YOU DECRYPTED: "${correct}"<br><br>
+                CIPHER BASICS MASTERED!<br>
+                SCORE: +${currentScore} PTS<br><br>
+                <button class="btn" onclick="startLevel(2)">NEXT LEVEL →</button>
+            </div>
+        `;
+        updateBestScore(currentScore);
+    } else {
+        playFail();
+        resultDiv.innerHTML = `<div class="fail-message">❌ WRONG ANSWER! TRY AGAIN</div>`;
+        setTimeout(() => resultDiv.innerHTML = '', 2000);
+    }
+}
+
+// LEVEL 2: Key Hunter
+function checkLevel2() {
+    const input = document.getElementById('level2-input').value.toUpperCase().trim();
+    const correct = "PIX";
+    const resultDiv = document.getElementById('level2-result');
+    
+    if (input === correct) {
+        playSuccess();
+        createConfetti();
+
+        const ciphertext = "AQE LQVNAN";
+        const plaintext = vigenereDecode(ciphertext, correct);
+        
+        resultDiv.innerHTML = `
+            <div class="success-message">
+                🎉 KEY FOUND!<br><br>
+                DECRYPTED MESSAGE: "${plaintext}"<br><br>
+                SCORE: +${currentScore - (hintsUsed * 25)} PTS<br><br>
+                <button class="btn" onclick="startLevel(3)">NEXT LEVEL →</button>
+            </div>
+        `;
+        updateBestScore(currentScore - (hintsUsed * 25));
+    } else {
+        playFail();
+        resultDiv.innerHTML = `<div class="fail-message">❌ WRONG KEY! TRY AGAIN</div>`;
+        setTimeout(() => resultDiv.innerHTML = '', 2000);
+    }
+}
+
+function showHint2() {
+    hintsUsed++;
+    currentScore -= 25;
+    document.getElementById('score-2').textContent = currentScore;
+    document.getElementById('hint2-display').style.display = 'block';
+    document.getElementById('hint2-display').textContent = '💡 HINT: The first letter is "P"';
+    playClick();
+}
+
+// LEVEL 3: Byte Detective
+function initLevel3() {
+
+    document.getElementById('level3-input').value = '';
+    document.getElementById('level3-result').innerHTML = '';
+    document.getElementById('hint3-display').style.display = 'none';
+}
+
+function checkLevel3() {
+    const input = document.getElementById('level3-input').value.toUpperCase().trim();
+    const correct = "ENCODE";
+    const resultDiv = document.getElementById('level3-result');
+    
+    if (input === correct) {
+        playSuccess();
+        createConfetti();
+        
+        resultDiv.innerHTML = `
+            <div class="success-message">
+                🎉 DECRYPTION COMPLETE!<br><br>
+                HIDDEN MESSAGE: "ENCODE"<br><br>
+                BYTE MATH MASTERED!<br>
+                SCORE: +${currentScore - (hintsUsed * 25)} PTS<br><br>
+                <button class="btn" onclick="startLevel(4)">BONUS LEVEL →</button>
+            </div>
+        `;
+        updateBestScore(currentScore - (hintsUsed * 25));
+    } else {
+        playFail();
+        resultDiv.innerHTML = `<div class="fail-message">❌ WRONG MESSAGE! TRY AGAIN</div>`;
+        setTimeout(() => resultDiv.innerHTML = '', 2000);
+    }
+}
+
+function showHint3() {
+    hintsUsed++;
+    currentScore -= 25;
+    document.getElementById('score-3').textContent = currentScore;
+    document.getElementById('hint3-display').style.display = 'block';
+    document.getElementById('hint3-display').textContent = '💡 HINT: The decrypted word starts with "ENC" and relates to encryption!';
+    playClick();
+}
+// LEVEL 4: Race Against Time
+const quizQuestions = [
+    { q: "Encrypt 'A' with key 'B' using Vigenère (A=0, B=1)", a: "B" },
+    { q: "What's the mod value in PIXecure? (letters or bytes?)", a: "BYTES" },
+    { q: "Who is the cipher named after?", a: "VIGENERE" },
+    { q: "How many bytes make one RGB pixel?", a: "3" },
+    { q: "Decrypt 'C' with key 'A' (C=2, A=0)", a: "C" },
+    { q: "What year did Kasiski crack the cipher?", a: "1863" },
+    { q: "Is PIXecure's cipher polyalphabetic? (YES/NO)", a: "YES" }
+];
+
+function startQuiz() {
+    timeLeft = 30;
+    quizScore = 0;
+    currentQuestion = 0;
+    document.getElementById('score-4').textContent = quizScore;
+    document.getElementById('quiz-start').style.display = 'none';
+    document.getElementById('quiz-submit').style.display = 'inline-block';
+    document.getElementById('level4-input').style.display = 'block';
+    
+    loadQuestion();
+    
+    quizTimer = setInterval(() => {
+        timeLeft--;
+        document.getElementById('timer').textContent = timeLeft;
+        
+        if (timeLeft <= 0) {
+            endQuiz();
+        }
+    }, 1000);
+}
+
+function loadQuestion() {
+    if (currentQuestion < quizQuestions.length) {
+        const q = quizQuestions[currentQuestion];
+        document.getElementById('quiz-question').textContent = q.q;
+        document.getElementById('level4-input').value = '';
+        document.getElementById('level4-input').focus();
+    } else {
+  
+        currentQuestion = 0;
+        loadQuestion();
+    }
+}
+
+function checkQuiz() {
+    const input = document.getElementById('level4-input').value.toUpperCase().trim();
+    const correct = quizQuestions[currentQuestion].a;
+    
+    if (input === correct) {
+        quizScore += 100;
+        document.getElementById('score-4').textContent = quizScore;
+        playSuccess();
+        currentQuestion++;
+        loadQuestion();
+    } else {
+        playFail();
+        document.getElementById('level4-result').innerHTML = `<div class="fail-message">❌ WRONG!</div>`;
+        setTimeout(() => document.getElementById('level4-result').innerHTML = '', 1000);
+    }
+}
+
+function endQuiz() {
+    clearInterval(quizTimer);
+    quizTimer = null;
+    document.getElementById('quiz-submit').style.display = 'none';
+    document.getElementById('level4-input').style.display = 'none';
+    
+    createConfetti();
+    document.getElementById('quiz-question').innerHTML = `
+        <div class="success-message">
+            TIME'S UP!<br><br>
+            FINAL SCORE: ${quizScore} PTS<br><br>
+            <button class="btn" onclick="startQuiz()">PLAY AGAIN</button>
+            <button class="btn" onclick="backToSelect()">MAIN MENU</button>
+        </div>
+    `;
+    
+    updateBestScore(quizScore);
+}
+
+
+function vigenereDecode(ciphertext, key) {
+    let result = '';
+    key = key.toUpperCase();
+    ciphertext = ciphertext.toUpperCase();
+    let keyIndex = 0;
+    
+    for (let i = 0; i < ciphertext.length; i++) {
+        const char = ciphertext[i];
+        if (char >= 'A' && char <= 'Z') {
+            const c = char.charCodeAt(0) - 65;
+            const k = key[keyIndex % key.length].charCodeAt(0) - 65;
+            result += String.fromCharCode(((c - k + 26) % 26) + 65);
+            keyIndex++;
+        } else {
+            result += char;
+        }
+    }
+    return result;
+}
+
+function updateBestScore(score) {
+    if (score > bestScore) {
+        bestScore = score;
+        localStorage.setItem('pixecure-best-score', bestScore.toString());
+        document.getElementById('best-score').textContent = bestScore;
+    }
+}
+
+function createConfetti() {
+    for (let i = 0; i < 50; i++) {
+        setTimeout(() => {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.left = Math.random() * 100 + '%';
+            confetti.style.background = ['#ffd700', '#ff4444', '#5c94fc', '#90ee90'][Math.floor(Math.random() * 4)];
+            document.body.appendChild(confetti);
+            setTimeout(() => confetti.remove(), 2000);
+        }, i * 30);
+    }
+}
+
+function playSuccess() {
+    playTone(800, 0.1);
+    setTimeout(() => playTone(1000, 0.15), 100);
+}
+
+function playFail() {
+    playTone(200, 0.2);
+}
+
+function playClick() {
+    playTone(400, 0.05);
+}
+
+function playTone(freq, duration) {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    oscillator.frequency.value = freq;
+    oscillator.type = 'square';
+    
+    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+    
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + duration);
+}
+    </script>
+</body>
+</html>
